@@ -4,16 +4,16 @@
   }
   var Asteroid = Asteroids.Asteroid = function (pos, img, game) {
     var opts = {}
-    opts.color = Asteroids.COLOR;
+    opts.color = Asteroid.COLOR;
     opts.pos = pos;
-    opts.radius = Asteroid.radius;
+    opts.radius = Asteroid.RADIUS;
     opts.vel = Asteroids.Util.randomVec(Asteroid.SPEED);
-    opts.game = game
+    opts.game = game;
+    opts.img = img;
     Asteroids.MovingObject.call(this, opts);
-    this.img = img;
   };
 
-  Asteroid.COLOR = "#505050";
+  Asteroid.COLOR = "#eee";
   Asteroid.RADIUS = 50 * Math.random();
   Asteroid.SPEED = 10; // default speed gets multiplied by a random vec
   Asteroids.Util.inherits(Asteroid, Asteroids.MovingObject);

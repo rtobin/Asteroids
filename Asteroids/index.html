@@ -16,7 +16,7 @@
   <body>
     <canvas></canvas>
     <script type="application/javascript" src="vendor/keymaster.js"></script>
-    
+
     <img src="images/pillars_of_creation.jpg" class="hidden" id="background">
     <img src="images/asteroid.jpg" class="hidden" id="asteroid">
 
@@ -35,7 +35,8 @@
         canvas.height = Asteroids.Game.DIM_Y;
         var ctx = canvas.getContext("2d");
         var game = new Asteroids.Game(asteroid);
-        new Asteroids.GameView(game, ctx, background).start();
+        var view = new Asteroids.GameView(game, ctx, background);
+        view.start();
       })();
     </script>
   </body>

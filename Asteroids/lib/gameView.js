@@ -22,7 +22,7 @@
     this.bindKeyHandlers();
 
     setInterval(function(){
-      view.ctx.drawImage(view.background, 0, 0);
+      // view.ctx.drawImage(view.background, 0, 0);
       view.game.moveObjects();
       view.game.draw(view.ctx);
       }, 1000 / Asteroids.Game.FPS

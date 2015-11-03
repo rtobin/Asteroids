@@ -11,31 +11,31 @@
     this.color = opts.color;
     this.game = opts.game;
     this.frameVelocity = this.game.ship.vel
-
+    this.img = opts.img
     this.frameOrigin = this.game.ORIGIN
     this.DT = this.game.DT;
   };
 
   MovingObject.prototype.draw = function(ctx) {
-    // ctx.fillStyle = this.color;
-    // ctx.beginPath();
-    // ctx.arc(
-    //   this.pos[0],
-    //   this.pos[1],
-    //   this.radius,
-    //   0,
-    //   2 * Math.PI,
-    //   false
-    // );
-    //
-    // ctx.fill();
-    ctx.drawImage(
-        this.img,
-        this.pos[0] - this.radius * 1.7,
-        this.pos[1] - this.radius * 1.7,
-        this.radius * 2,
-        this.radius * 2
-    )
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(
+      this.pos[0],
+      this.pos[1],
+      this.radius,
+      0,
+      2 * Math.PI,
+      false
+    );
+
+    ctx.fill();
+    // ctx.drawImage(
+    //     this.img,
+    //     this.pos[0] - this.radius * 1.7,
+    //     this.pos[1] - this.radius * 1.7,
+    //     this.radius * 2,
+    //     this.radius * 2
+    // )
   };
 
   MovingObject.prototype.collideWith = function (otherObject) {
@@ -56,8 +56,8 @@
   MovingObject.prototype.move = function () {
     var relVel = this.sumVelocities(this.vel, this.frameVelocity)
     this.pos = [
-      this.pos[0] + this.relVel[0] * this.DT,
-      this.pos[1] + this.relVel[1] * this.DT
+      this.pos[0] + relVel[0] * this.DT,
+      this.pos[1] + relVel[1] * this.DT
     ]
 
     if (this.game.isOutOfBounds(this.pos)) {

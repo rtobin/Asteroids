@@ -10,7 +10,7 @@
     this.radius = opts.radius;
     this.color = opts.color;
     this.game = opts.game;
-    this.DT = this.game.DT;
+    this.DT = 0 //this.game.DT;
   };
 
   FrameObject.prototype.draw = function(ctx) {

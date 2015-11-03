@@ -16,6 +16,7 @@
   var Ship = Asteroids.Ship = function (opts) {
     this.radius = Ship.RADIUS;
     this.vel = opts.vel || [0, 0];
+    this.pos = opts.pos || []
     this.color = opts.color || randomColor();
 
     // Asteroids.MovingObject.call(this, opts);

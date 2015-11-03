@@ -54,7 +54,8 @@
   Game.prototype.draw = function (ctx) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     // this.CheckCollisions()
-
+    ctx.fillStyle = Game.BACKGROUND;
+    ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y)
     this.asteroids.forEach(function (asty) {
       if (typeof(asty) !== "number") {
         asty.pos = this.wrap(asty.pos);
@@ -69,6 +70,11 @@
         asty.move();
       }
     })
+  }
+
+  Game.prototype.isOutOfBounds = function (pos) {
+    return (pos[0] >= this.DIM_X || pos[0] < 0 ||
+            pos[1] >= this.DIM_Y || pos[1] < 0)
   }
 
   Game.prototype.wrap = function (pos) {
