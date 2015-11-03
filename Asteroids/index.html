@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Asteroids</title>
+    <style>
+      canvas {
+        border: 1px solid #000;
+      }
+      .hidden {
+        display: none;
+      }
+  </style>
+  </head>
+
+  <body>
+    <canvas></canvas>
+    <script type="application/javascript" src="vendor/keymaster.js"></script>
+    
+    <img src="images/pillars_of_creation.jpg" class="hidden" id="background">
+    <img src="images/asteroid.jpg" class="hidden" id="asteroid">
+
+    <script type="application/javascript" src="lib/utils.js"></script>
+    <script type="application/javascript" src="lib/ship.js"></script>
+    <script type="application/javascript" src="lib/movingObject.js"></script>
+    <script type="application/javascript" src="lib/asteroid.js"></script>
+    <script type="application/javascript" src="lib/game.js"></script>
+    <script type="application/javascript" src="lib/gameView.js"></script>
+    <script type="application/javascript" src="lib/bullet.js"></script>
+
+    <script type="application/javascript">
+      (function () {
+        var canvas = document.getElementsByTagName("canvas")[0];
+        canvas.width = Asteroids.Game.DIM_X;
+        canvas.height = Asteroids.Game.DIM_Y;
+        var ctx = canvas.getContext("2d");
+        var game = new Asteroids.Game(asteroid);
+        new Asteroids.GameView(game, ctx, background).start();
+      })();
+    </script>
+  </body>
+</html>
