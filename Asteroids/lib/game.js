@@ -7,13 +7,14 @@
   var Game = Asteroids.Game = function (asteroidImg) {
     this.bullets = [];
     this.ship = new Asteroids.Ship({ game: Game });
-    this.asteroids = this.addAsteroids(asteroidImg);
+    this.asteroids = [];
+    this.addAsteroids(asteroidImg);
 
   }
 
   Game.BACKGROUND = "#000000"
-  Game.DIM_X = 1000;
-  Game.DIM_Y = 600;
+  Game.DIM_X = 1800;
+  Game.DIM_Y = 800;
   Game.FPS = 32;
   Game.DT = 1 / Game.FPS
   Game.BUFFER_X = Game.DIM_X * 0.1;
@@ -26,14 +27,12 @@
   // changes relative to the ships velocity
 
   Game.prototype.addAsteroids = function(img) {
-    var asteroids = [];
     var that = this;
 
     for(var i = 0; i < Game.NUM_ASTEROIDS; i++){
-      asteroids.push(new Asteroids.Asteroid(that.randomPosition(), img, that));
+      this.asteroids.push(new Asteroids.Asteroid(that.randomPosition(), img, that));
     };
 
-    return asteroids;
   };
 
   Game.prototype.randomPosition = function () {
@@ -58,7 +57,7 @@
     ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y)
     this.asteroids.forEach(function (asty) {
       if (typeof(asty) !== "number") {
-        asty.pos = this.wrap(asty.pos);
+        // asty.pos = this.wrap(asty.pos);
         asty.draw(ctx);
       }
     }.bind(this));
@@ -73,13 +72,13 @@
   }
 
   Game.prototype.isOutOfBounds = function (pos) {
-    return (pos[0] >= this.DIM_X || pos[0] < 0 ||
-            pos[1] >= this.DIM_Y || pos[1] < 0)
+    return (pos[0] >= Game.DIM_X || pos[0] < 0 ||
+            pos[1] >= Game.DIM_Y || pos[1] < 0)
   }
 
   Game.prototype.wrap = function (pos) {
-    return [(pos[0] + this.DIM_X) % (this.DIM_X),
-            (pos[1] + this.DIM_Y) % (this.DIM_Y)]
+    return [(pos[0] + Game.DIM_X) % (Game.DIM_X),
+            (pos[1] + Game.DIM_Y) % (Game.DIM_Y)]
   }
 
   Game.prototype.distanceBetween = function (pos1, pos2) {

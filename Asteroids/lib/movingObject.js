@@ -13,8 +13,9 @@
     this.frameVelocity = this.game.ship.vel
     this.img = opts.img
     this.frameOrigin = this.game.ORIGIN
-    this.DT = this.game.DT;
   };
+
+  MovingObject.DT = 1.0
 
   MovingObject.prototype.draw = function(ctx) {
     ctx.fillStyle = this.color;
@@ -56,13 +57,11 @@
   MovingObject.prototype.move = function () {
     var relVel = this.sumVelocities(this.vel, this.frameVelocity)
     this.pos = [
-      this.pos[0] + relVel[0] * this.DT,
-      this.pos[1] + relVel[1] * this.DT
+      this.pos[0] + relVel[0] * MovingObject.DT,
+      this.pos[1] + relVel[1] * MovingObject.DT
     ]
 
-    if (this.game.isOutOfBounds(this.pos)) {
-      this.pos = this.game.wrap(this.pos)
-    }
+    this.pos = this.game.wrap(this.pos)
   };
 
   MovingObject.prototype.destroy = function () {

@@ -41,5 +41,4 @@
     // key("space", function () { ship.fireBullet() });
   };
 
-
 })();
