@@ -20,17 +20,26 @@
   Game.BUFFER_X = Game.DIM_X * 0.1;
   Game.BUFFER_Y = Game.DIM_Y * 0.1;
   Game.NUM_ASTEROIDS = 10;
+  Game.cSpeedOfLight = 5;
   Game.ORIGIN = [Math.floor(Game.DIM_X - Game.BUFFER_X),
                  Math.floor(Game.DIM_Y - Game.BUFFER_Y)]
   // Note: the origin never changes, in fact the ship stays center
   // the origin is the perspective of the ship, so every objects velocity
   // changes relative to the ships velocity
 
+  Game.prototype.addAsteroid = function(pos, vel){
+    var that = this;
+    opts = {game: this, pos: pos, vel: vel }
+    this.asteroids.push(new Asteroids.Asteroid(opts));
+  }
+
   Game.prototype.addAsteroids = function(img) {
     var that = this;
 
     for(var i = 0; i < Game.NUM_ASTEROIDS; i++){
-      this.asteroids.push(new Asteroids.Asteroid(that.randomPosition(), img, that));
+      pos = this.randomPosition()
+      opts = {game: this, pos: pos }
+      this.asteroids.push(new Asteroids.Asteroid(opts));
     };
 
   };

@@ -37,23 +37,6 @@
     return dist < (this.radius + entity.radius);
   };
 
-  // for relativistic velocities we need a lorentz transformation
-
-  FrameObject.prototype.sumVelocities = function (vel1, vel2) {
-    return [ vel1[0] + vel2[0], vel1[1] + vel2[1] ]
-  };
-
-  FrameObject.prototype.move = function () {
-    var relVel = this.sumVelocities(this.vel, this.frameVelocity)
-    this.pos = [
-      this.pos[0] + this.relVel[0] * this.DT,
-      this.pos[1] + this.relVel[1] * this.DT
-    ]
-
-    if (this.game.isOutOfBounds(this.pos)) {
-      this.pos = this.game.wrap(this.pos)
-    }
-  };
 
   FrameObject.prototype.destroy = function () {
     this.game.remove(this)
