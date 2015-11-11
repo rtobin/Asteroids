@@ -5,18 +5,20 @@
 
 
   var MovingObject = Asteroids.MovingObject = function (opts) {
-    this.pos = opts.pos; // relative to center
-    this.vel = opts.vel;
-    this.radius = opts.radius;
-    this.color = opts.color;
+    this.pos = opts.pos || 0; // relative to center
+    this.vx = opts.vx || 0;
+    this.vy = opts.vy || 0;
+    this.radius = opts.radius || 100;
+    this.color = opts.color || "yellow";
     this.game = opts.game;
-    this.frameVelocity = this.game.ship.vel
-    this.img = opts.img
-    this.frameOrigin = this.game.ORIGIN
+    // this.vS = this.game.ship.vel;
+    this.ship = this.game.ship;
+    this.img = opts.img;
+    this.frameOrigin = this.game.ORIGIN;
     this.posRel = 0;
   };
 
-  MovingObject.DT = 1.0
+  MovingObject.DT = 1.0;
 
   MovingObject.prototype.draw = function(ctx) {
     ctx.fillStyle = this.color;
@@ -53,52 +55,67 @@
     //gamma = 1 / Math.sqrt(1 - Math.pow(this.speed(), 2) / Math.pow(Asteroids.Game.cSpeedOfLight, 2));
 
 
-  }
+  };
 
-  MovingObject.prototype.relativeVelocity = function () {
+  MovingObject.prototype.setRelativeVelocity = function () {
     //return [ vel1[0] + vel2[0], vel1[1] + vel2[1] ]
     // relativistic velocity addition
     // the velocity in the frame of the ship
-    var velShip = this.game.ship.vel;
-    var velAsty = this.vel;
-    // debugger
-    var vS = Asteroids.Util.vecNorm(velShip);
-    var vA = this.speed();
+    // need to multiply angle by (-1) to make it rotate to frame where ship is
+    // travelling in x-direction
+    debugger
+    var vRot, vx, vy, vS, vxRel, vyRel, v;
+    var spdOfLightSqd = Asteroids.Game.cSpeedOfLight * Asteroids.Game.cSpeedOfLight;
 
-    // we need the angle of the asteroid velocity with respect to ship velocity
-    var theta = Asteroids.Util.getTheta(velAsty) - Asteroids.Util.getTheta(velShip)
-    var cosTheta = Math.cos(theta);
-    var sinTheta = Math.sin(theta);
-    c = Asteroids.Game.cSpeedOfLight;
+    vRot = Asteroids.Util.rotVec((-1)*this.ship.angle, this.vx, this.vy);
 
-    var vRel = Math.sqrt(vA*vA + vS*vS + 2*vS*vA*cosTheta
-                - Math.pow(vS*vA*sinTheta / c, 2)) / (1 + vS*vA*cosTheta/(c*c))
+    // rotated
+    vx = vRot[0];
+    vy = vRot[1];
+    vS = this.ship.speed();
+    vxRel = (vx + vS) / (1 + vS * vx / spdOfLightSqd);
+    vyRel = math.sqrt(1 - vS * vS / spdOfLightSqd) * vy /
+                  (1 + vS * vx / spdOfLightSqd);
 
-    thetaRel =(-1) * Math.atan2( Math.sqrt(1 - vS*vS/(c*c))*vA*sinTheta, vA*cosTheta + vS);
-    v = [vRel * Math.cos(thetaRel), vRel * Math.sin(thetaRel)];
-    return v;
+    // rotate back
+    this.relVel = Asteroids.Util.rotVec(this.ship.angle, vxRel, vyRel);
+  };
+
+  MovingObject.prototype.getTransformationMatrix = function (){
+    var theta =  Asteroids.Util.getTheta(this.relVel[0], this.relVel[1]);
+    var sinTheta = math.sin(theta);
+    var cosTheta = math.cos(theta);
+    var spdOfLightSqd = Asteroids.Game.cSpeedOfLight * Asteroids.Game.cSpeedOfLight;
+    var relSpd = Asteroids.Util.vecNorm(this.relVel[0], this.relVel[1]);
+
+    // 1 / gamma(vrel)
+    var scl = math.sqrt(1 - relSpd*relSpd / spdOfLightSqd);
+    return [
+
+    ];
   };
 
   MovingObject.prototype.speed = function () {
-    return Asteroids.Util.vecNorm(this.vel);
-  }
+    return Asteroids.Util.vecNorm(this.vx, this.vy);
+  };
 
   MovingObject.prototype.move = function () {
-    relVel = this.relativeVelocity()
+    this.setRelativeVelocity();
+
     // this.pos = [
     //   this.pos[0] + this.vel[0] * MovingObject.DT,
     //   this.pos[1] + this.vel[1] * MovingObject.DT
     // ]
     this.pos = [
-      this.pos[0] + relVel[0] * MovingObject.DT,
-      this.pos[1] + relVel[1] * MovingObject.DT
-    ]
+      this.pos[0] + this.relVel[0] * MovingObject.DT,
+      this.pos[1] + this.relVel[1] * MovingObject.DT
+    ];
 
     //this.pos = this.game.wrap(this.pos)
   };
 
   MovingObject.prototype.destroy = function () {
-    this.game.remove(this)
-  }
+    this.game.remove(this);
+  };
 
 })();

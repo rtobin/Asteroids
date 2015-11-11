@@ -9,7 +9,9 @@
     opts.color = Asteroid.COLOR;
     opts.pos = opts.pos || [0,0];
     opts.radius = opts.radius || 50 * Math.random(); //Asteroid.RADIUS;
-    opts.vel = opts.vel || Asteroids.Util.randomVec(Asteroid.SPEED);
+    var vel = Asteroids.Util.randomVec(Asteroid.SPEED);
+    opts.vx = vel[0];
+    opts.vy = vel[1];
     //opts.img = img;
     Asteroids.MovingObject.call(this, opts);
   };
@@ -21,7 +23,7 @@
 
   Asteroid.prototype.collideWith = function (entity) {
     if (entity instanceof Asteroids.Ship) { entity.relocate}
-  }
+  };
 
 
 

@@ -6,16 +6,16 @@
   var Util = Asteroids.Util = {};
 
   var inherits = Util.inherits = function (ChildClass, ParentClass) {
-    var Surrogate = function(){ this.constructor = ChildClass };
+    var Surrogate = function(){ this.constructor = ChildClass; };
     Surrogate.prototype = ParentClass.prototype;
     ChildClass.prototype = new Surrogate();
   };
 
   var randomVec = Util.randomVec = function (magnitude) {
-    var theta = Math.random() * 2 * Math.PI;
+    var theta = math.random() * 2 * math.PI;
     var pos = [];
-    pos[0] = magnitude * Math.cos(theta);
-    pos[1] = magnitude * Math.sin(theta);
+    pos[0] = magnitude * math.cos(theta);
+    pos[1] = magnitude * math.sin(theta);
 
     return pos;
   };
@@ -35,17 +35,27 @@
   };
 
   // gets the magnitude of a vector
-  var vecNorm = Util.vecNorm = function (vec) {
-    return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1]);
+  var vecNorm = Util.vecNorm = function (vx, vy) {
+    return math.sqrt(vx * vx + vy * vy);
   };
 
-  // get angle of x-axis with respect to vector (negative of the opposite)
-  var getTheta = Util.getTheta = function (vec) {
-    if (vec[0] === 0) {
-      if (vec[1] >= 0) { return Math.PI/2 }
-      else {return -Math.PI/2}
+  // get angle of vector wrt x-axis
+  var getTheta = Util.getTheta = function (vx, vy) {
+    if (vx === 0) {
+      if (vy >= 0) { return math.PI/2; }
+      else {return -math.PI/2;}
     }
-    return Math.atan2(vec[1] , vec[0]);
+
+    return math.atan2(vy , vx);
+  };
+
+  var rotVec = Util.rotVec = function (theta, vx, vy) {
+    if (vx === 0 && vy === 0) { return [0, 0];}
+    var z = math.complex(vx, vy);
+    z = math.multiply(
+        math.complex(math.cos(theta), math.sin(theta)),
+        z);
+    return [z.re, z.im];
   };
 
 })();

@@ -14,12 +14,11 @@
     "w": [ 0, -1],
     "a": [-1,  0],
     "s": [ 0,  1],
-    "d": [ 1,  0],
+    "d": [ 1,  0]
   };
 
   GameView.prototype.start = function(){
-    var view = this
-    this.bindKeyHandlers();
+    var view = this;
 
     setInterval(function(){
       // view.ctx.drawImage(view.background, 0, 0);
@@ -28,6 +27,7 @@
       }, 1000 / Asteroids.Game.FPS
     );
 
+    this.bindKeyHandlers();
   };
 
   GameView.prototype.bindKeyHandlers = function () {
@@ -35,7 +35,8 @@
 
     Object.keys(GameView.MOVES).forEach(function (k) {
       var move = GameView.MOVES[k];
-      key(k, function () { ship.thrust(move); });
+      key(k, function () { ship.thrust(move[0], move[1]); });
+      // console.log(k);
     });
 
     // key("space", function () { ship.fireBullet() });
